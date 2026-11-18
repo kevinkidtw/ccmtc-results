@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Post {
+  id              String   @id @default(cuid())
+  date            DateTime // 教學日期
+  school          String   // 學校
+  gradeLevel      String   // 年段
+  subject         String   // 課程主題 (老師自行輸入)
+  content         String   // 教學內容簡介
+  category        String?  // 主題分類
+  infoTechDetails String?  // 資科主題細項
+  lifeTechDetails String?  // 生科主題細項
+  policyFocus     String?  // 政策重點
+  teacher         String?  // 授課教師
+  createdAt       DateTime @default(now())
+  
+  photos      Photo[]
+}
+
+model Template {
+  id        String   @id @default(cuid())
+  name      String   // 範本名稱 (e.g. 張老師-3D列印入門範本)
+  content   String   // 教學內容簡介範本
+  category  String?  // 課程主題分類 (e.g. 3D列印, 智創機器人)
+  createdAt DateTime @default(now())
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  url       String   // 照片的路徑
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}

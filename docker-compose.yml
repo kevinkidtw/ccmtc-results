@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  checheng_web:
+    build: .
+    container_name: checheng-maker-web
+    restart: unless-stopped
+    user: "0:0"
+    ports:
+      - "3010:3010"
+    environment:
+      - DATABASE_URL=file:/app/data/dev.db
+      - SITE_URL=https://checheng-maker.mooo.com
+      - ADMIN_TOKEN=${ADMIN_TOKEN:?ADMIN_TOKEN 未設定，請確認同目錄的 .env}
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
